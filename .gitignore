@@ -1,3 +1,5 @@
+node_modules/.bin/fxparser.cmd
+node_modules/.bin/uuid.cmd
 # Ignora la carpeta node_modules
 /node_modules
 *node_modules/*

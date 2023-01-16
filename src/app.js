@@ -5,6 +5,8 @@ import handlebars from 'express-handlebars'
 import {Server} from 'socket.io'
 import routerViews from './routes/views.router.js'
 import __dirname from './utils.js'
+import mongoose from 'mongoose'
+import users from './routes/users.router.js'
 
 const app = express()
 
@@ -20,17 +22,20 @@ app.use('/', routerViews) //Tomo las logicas de renderizacion desde el archivo v
 app.use('/realtimeproducts', routerViews)
 app.use('/api/products/',product)  //Conecto router y me traigo todos los endpoints, en POSTMAN siempre va a ser /api/products/ + la ruta que se defina en el archivo router
 app.use('/api/cart',cart) //Conecto router y me traigo todos los endpoints
+//Agrego router users
+app.use('/api/users',users) //Conecto router y me traigo todos los endpoints
+
 
 const httpServer = app.listen(8080,() => console.log('Server arriba'))
 const io = new Server(httpServer) // Init Servers
 
+//Conexion a la BD
+mongoose.connect('mongodb+srv://Abalart:AWd3y8HjQ3RCR0WG@coderhouse.ed0pzal.mongodb.net/?retryWrites=true&w=majority',
+{dbName:'MyFirstDB'})
 
 export default io
 
-
-
-
-
+//mongodb+srv://Abalart:AWd3y8HjQ3RCR0WG@coderhouse.ed0pzal.mongodb.net/?retryWrites=true&w=majority
 
 
 
