@@ -1,6 +1,6 @@
 //Los archivos routes contrendran la logica y lista de endpoints agrupados por funcionalidades
 import {Router} from 'express'
-import ProductManager from '../product_manager.js'
+import ProductManager from '../dao/product_manager.js'
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 

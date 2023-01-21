@@ -1,6 +1,6 @@
 //En ese archivo tendremos la logica de renderizado, de donde tomar CSS,etc
 import express from 'express'
-import ProductManager from '../product_manager.js'
+import ProductManager from '../dao/product_manager.js'
 import io from '../app.js'  //Para realTime
 
 const router = express.Router()
