@@ -4,7 +4,14 @@ const productsCollection = 'products'
 
 const productsSchema = new mongoose.Schema({
     products: {
-        type: Array,
+        title: String,
+        description: String,
+        price: Number,
+        code:Number,
+        id: Number,
+        stock:Number,
+        category:String,
+        status:Boolean,
         default: []
     }    
 })
