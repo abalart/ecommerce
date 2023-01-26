@@ -4,9 +4,15 @@ const cartsCollection = 'carts'
 
 const cartsSchema = new mongoose.Schema({
     products: {
-        type: Array,
-        default: []
-    }    
+         type:[{
+            id: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'products'
+            },
+            quantity:Number,
+          }],
+    default: []
+    },
 })
 
 mongoose.set("strictQuery", false);

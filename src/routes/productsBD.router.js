@@ -6,8 +6,6 @@ import productsModel from '../dao/models/products.model.js'
 
 
 const router = Router()
- 
-
 
 // Listar productos
 router.get('/', async (req, res) => {
@@ -74,9 +72,7 @@ router.delete('/:pid', async (req, res) => {
 // Obtener un producto
 router.get('/:name', async (req, res) => {
     const name = req.params.name
-
     const producto = await productsModel.findOne({name: name}).lean().exec()
-    
     res.render('one', { producto })
 })
 

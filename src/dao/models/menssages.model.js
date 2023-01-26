@@ -3,7 +3,9 @@ import mongoose from 'mongoose'
 const messagesCollection = 'messages'
 
 const messagesSchema = new mongoose.Schema({
-    message: String
+    message: String,
+    email: String,
+    user: String,
 })
 
 mongoose.set("strictQuery", false);

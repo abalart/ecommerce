@@ -2,14 +2,16 @@
 import express from 'express'
 import ProductManager from '../dao/product_manager.js'
 import io from '../app.js'  //Para realTime
+import productsModel from '../dao/models/products.model.js'
 
 const router = express.Router()
 const fileName = 'productos.json'
 const manager = new ProductManager(fileName)
  
-//Listado de productos
+//Listado de productos que se van a renderisar en localhost
 router.get('/',async (req,res)=>{
-   const list = await manager.getProducts()
+   const list = await productsModel.find() //Obtengo lista desde la BD
+   console.log(list)
     res.render('home',{list})
 })
 
