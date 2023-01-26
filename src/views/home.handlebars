@@ -1,23 +1,6 @@
 <div>
-{{#if list}}
    <div id="products">
-{{#each list}}
-<div>
-        <p>{{this.title}}</p>
-        <p><b>{{this.description}}</b></p>
-        <p><b>{{this.price}}</b></p>
-        <p><b>{{this.code}}</b></p>
-        <p><b>{{this.stock}}</b></p>
-        <p><b>{{this.category}}</b></p>
-        <p><b>{{this.status}}</b></p>
-        <p><b>{{this.thumbnails}}</b></p>
-        <hr>
-</div>
-{{/each}}
-</div>
-{{else}}
-<h2>No se encontraron productos</h2>
-{{/if}}
+{{list}}
 </div>
 <script src="/js/index.js"></script>
   

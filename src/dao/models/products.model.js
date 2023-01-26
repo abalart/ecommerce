@@ -3,7 +3,6 @@ import mongoose from 'mongoose'
 const productsCollection = 'products'
 
 const productsSchema = new mongoose.Schema({
-    products: {
         title: String,
         description: String,
         price: Number,
@@ -11,8 +10,7 @@ const productsSchema = new mongoose.Schema({
         stock:Number,
         category:String,
         status:Boolean,
-        default: []
-    }    
+        thumbails:Array
 })
 
 mongoose.set("strictQuery", false);

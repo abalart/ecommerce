@@ -9,7 +9,7 @@ const router = Router()
 
 // Listar productos
 router.get('/', async (req, res) => {
-    const prods = await productsModel.find().lean().exec()
+    const prods = await productsModel.find()
     res.send({result:'Exito',payload:prods})
 })
 
@@ -17,35 +17,12 @@ router.get('/', async (req, res) => {
 // crear productos
 router.post('/create',async(req, res) => {
     //obtengo los datos segun el schema definido
-
-    const lastProduct = await productsModel.find()
-        let nextID = lastProduct._id + 1
-
-    let {
+    const product = req.body
+    const productAdded = await productsModel.create(product)
       
-        title,
-        description,
-        price,
-        code,
-        id=nextID,
-        stock,
-        category,
-        status} = req.body
-     if(!title || !description || !price || !code || !stock || !category) 
-      return res.send({status:"error",error:"Incomplete values"})  
-     else{
-      let result = await productsModel.create({
-        title,
-        description,
-        price,
-        code,
-        id,
-        stock,
-        category,
-        status})
-
-        res.send({status:'Exito',payload:result})
-      }
+    //req.io.emit("updatedProducts",await productsModel.find())
+    res.json({status:'Exito',productAdded})
+      
 })
 
 
