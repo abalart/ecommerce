@@ -33,7 +33,6 @@ class CartManager{
         catch(err){
             return "Carts not found"
         }
-        
     }
        
     
