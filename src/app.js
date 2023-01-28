@@ -33,12 +33,16 @@ app.use('/api/users',users) //Conecto router y me traigo todos los endpoints
 const httpServer = app.listen(8080,() => console.log('Server arriba'))
 const io = new Server(httpServer) // Init Servers
 
-
 //Conexion con la BD
 mongoose.set('strictQuery', false)
 const uri = "mongodb+srv://abalart:yD3VgDOgFUHlnpei@ecommerce.mkzzehb.mongodb.net/test"
 mongoose.connect(uri,
-{dbName:'ecommerce'})
+{dbName:'ecommerce'},(error) =>{
+    if(!error){
+        console.log("Conexión con BD establecida")
+        return 
+    }
+})
 
 export default io
 

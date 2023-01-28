@@ -25,6 +25,16 @@ router.post('/create',async(req, res) => {
       
 })
 
+router.post('/realtimeproducts',async(req, res) => {
+    //obtengo los datos segun el schema definido
+    const product = req.body
+    const productAdded = await productsModel.create(product)
+      
+    //req.io.emit("updatedProducts",await productsModel.find())
+    res.json({status:'Exito',productAdded})
+      
+})
+
 
 // Obtener un producto
 router.put('/:pid', async (req, res) => {
@@ -46,11 +56,14 @@ router.delete('/:pid', async (req, res) => {
 })
 
 
-// Obtener un producto
-router.get('/:name', async (req, res) => {
-    const name = req.params.name
-    const producto = await productsModel.findOne({name: name}).lean().exec()
-    res.render('one', { producto })
+//Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts/)
+router.get('/:realtimeproducts', async (req, res) => {
+    const products = await productsModel.find()//.lean().exec()
+ 
+    res.render('realtimeproducts',{
+        data: products
+    })
+    
 })
 
 
@@ -67,10 +80,30 @@ router.post('/', async (req, res) => {
     
 })
 
-// Borrar un producto
-router.delete('/delete/:name', (req, res) => {
+// Borrar un producto por nombre
+router.delete('/delete/:name', async (req, res) => {
+   const name = parseInt(req.params.name)  //Guardo el parametro recibido
+   const deleteProduct =  await productsModel.deleteOne(name)
+   if(deleteProduct)
+   res.send("Producto eliminado")
+   else
+   return res.status(404).send('Product to eliminate not found')
     res.send('Borrando producto')
 })
+
+
+
+//DeleteById
+router.delete('/:pid', async(req, res) => {   
+   
+   const pid = parseInt(req.params.pid)  //Guardo el parametro recibido
+   const deleteProduct =  await productsModel.deleteOne(pid)
+   if(deleteProduct)
+   res.send("Producto eliminado")
+   else
+   return res.status(404).send('Product to eliminate not found')
+ })
+
 
 
 
