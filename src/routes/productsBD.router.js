@@ -19,7 +19,6 @@ router.post('/create',async(req, res) => {
     //obtengo los datos segun el schema definido
     const product = req.body
     const productAdded = await productsModel.create(product)
-      
     //req.io.emit("updatedProducts",await productsModel.find())
     res.json({status:'Exito',productAdded})
       
@@ -29,28 +28,23 @@ router.post('/realtimeproducts',async(req, res) => {
     //obtengo los datos segun el schema definido
     const product = req.body
     const productAdded = await productsModel.create(product)
-      
     //req.io.emit("updatedProducts",await productsModel.find())
     res.json({status:'Exito',productAdded})
       
 })
 
 
-// Obtener un producto
+// Actualizar un producto
 router.put('/:pid', async (req, res) => {
-    let  {pid} = req.params
-    let prodToReemplace = req.body
-     if(!title || !description || !price || !code || !stock || !category) 
-      return res.send({status:"error",error:"Incomplete values"})  
-    
-      let result = await productsModel.updateOne({_id:pid},prodToReemplace)
-    
-      res.send({status:'Exito',payload:result})
+    let  {pid} = req.params.id
+    let propToUpdate = req.body.title  
+    let result = await productsModel.updateOne({_id:{$eq:pid}},propToUpdate)
+    res.send({status:'Exito',payload:result})
 })
 
 // Obtener un producto
 router.delete('/:pid', async (req, res) => {
-      let  {pid} = req.params
+      const pid = await productsModel.findById(req.params.id);
       let result = await productsModel.deleteOne({_id:pid})
       res.send({status:'Exito',payload:result})
 })
@@ -59,7 +53,6 @@ router.delete('/:pid', async (req, res) => {
 //Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts/)
 router.get('/:realtimeproducts', async (req, res) => {
     const products = await productsModel.find()//.lean().exec()
- 
     res.render('realtimeproducts',{
         data: products
     })
