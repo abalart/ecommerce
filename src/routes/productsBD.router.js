@@ -5,11 +5,28 @@ const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import productsModel from '../dao/models/products.model.js'
 
 
+/**
+ 
+Con base en nuestra implementación actual de productos, modificar el método GET / para que cumpla con los siguientes puntos:
+Deberá poder recibir por query params un limit (opcional), una page (opcional), un sort (opcional) y un query (opcional)
+-limit permitirá devolver sólo el número de elementos solicitados al momento de la petición, en caso de no recibir limit, éste será de 10.
+page permitirá devolver la página que queremos buscar, en caso de no recibir page, ésta será de 1
+
+ */
+
 const router = Router()
 
 // Listar productos
 router.get('/', async (req, res) => {
-    const prods = await productsModel.find()
+  
+    const limit = req.query?.limit || 10
+    const page = req.query?.page || 1
+    const filter = req.query?.filter || ''
+    const sortQuery = req.query?.sort || ''
+    const sortQueryOrder = req.query?.sortorder || 'desc'
+
+    const prods = await productsModel.find().lean()
+
     res.send({result:'Exito',payload:prods})
 })
 
@@ -52,7 +69,7 @@ router.delete('/:pid', async (req, res) => {
 
 //Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts/)
 router.get('/:realtimeproducts', async (req, res) => {
-    const products = await productsModel.find()//.lean().exec()
+    const products = await productsModel.find().lean()//.lean().exec()
     res.render('realtimeproducts',{
         data: products
     })
