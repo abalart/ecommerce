@@ -12,11 +12,26 @@ Deberá poder recibir por query params un limit (opcional), una page (opcional),
 -limit permitirá devolver sólo el número de elementos solicitados al momento de la petición, en caso de no recibir limit, éste será de 10.
 page permitirá devolver la página que queremos buscar, en caso de no recibir page, ésta será de 1
 
+El método GET deberá devolver un objeto con el siguiente formato:
+{
+status:success/error
+payload: Resultado de los productos solicitados
+totalPages: Total de páginas
+prevPage: Página anterior
+nextPage: Página siguiente
+page: Página actual
+hasPrevPage: Indicador para saber si la página previa existe
+hasNextPage: Indicador para saber si la página siguiente existe.
+prevLink: Link directo a la página previa (null si hasPrevPage=false)
+nextLink: Link directo a la página siguiente (null si hasNextPage=false)
+}
+
+
  */
 
 const router = Router()
 
-// Listar productos
+// Listar productos http://127.0.0.1:8080/api/products
 router.get('/', async (req, res) => {
   
     const limit = req.query?.limit || 10
@@ -25,9 +40,40 @@ router.get('/', async (req, res) => {
     const sortQuery = req.query?.sort || ''
     const sortQueryOrder = req.query?.sortorder || 'desc'
 
-    const prods = await productsModel.find().lean()
+    const search = {}
+    if(filter) {
+        search.title = filter
+    }
+    const sort = {}
+    if (sortQuery) {
+        sort[sortQuery] = sortQueryOrder
+    }
 
-    res.send({result:'Exito',payload:prods})
+    const options = {
+        limit, 
+        page, 
+        sort,
+        lean: true
+    }
+    let status = "Success"
+    const data = await productsModel.paginate(search, options) //Le envio los 2 parametros de paginate
+    if(!data) 
+       {
+        status = "Success"
+        //console.log(JSON.stringify(data, null, 2, '\t'));
+        res.render('products', {data})
+
+        res.render({
+        result:status,
+        payload: data
+     })
+        return res.status(404).json({status: "error", error: "Product Not Found"}
+        
+        )}
+    else 
+       { status = "Error"
+        return res.status(200).json({status: "Success"})}
+
 })
 
 
