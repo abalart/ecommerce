@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import cartsModel from '../dao/models/carts.model.js'
-
+import productModel from '../dao/models/products.model.js'
 
 const router = Router()
 
@@ -44,7 +44,7 @@ router.delete("/:cid/product/:pid", async (req, res) => {
 router.post("/:cid/product/:pid", async (req, res) => {
     const cartID = req.params.cid
     const productID = req.params.pid
-    
+
     const quantity= req.body.quantity || 1
     const cart = await cartsModel.findById(cartID)
 
@@ -67,7 +67,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
 })
 
 
-//put
+
 
 
 export default router

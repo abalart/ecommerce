@@ -8,13 +8,12 @@ const router = express.Router()
 
 
 
-//Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts/)
+//Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts)
 router.get('/api/products/realtimeproducts', async (req, res) => {
     const products = await productsModel.find().lean()
     res.render('realtimeproducts',{
         data: products
     })
-    
 })
 
 
@@ -68,13 +67,13 @@ router.get('/api/products/paginate', async (req, res) => {
 
 })
 
- 
+ /*
 //Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/)
-router.get('/api/products',async (req,res)=>{
+router.get('/list',async (req,res)=>{
    const list = await productsModel.find() //Obtengo lista desde la BD
    res.render('home',{list})  //Acá indico que en homo que seia / muestre la lista de productos
 })
-
+*/
 
 
 

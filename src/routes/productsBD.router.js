@@ -7,26 +7,55 @@ import io from '../app.js'  //Para realTime
 
 const router = Router()
 
-
+//ok
+//127.0.0.1:8080/api/products
+router.get('/', async (req, res) => {
+    let products = await productsModel.find()
+    res.send({products})
+})
 
 
 // crear productos
 router.post('/create',async(req, res) => {
     //obtengo los datos segun el schema definido
+    let {title,description,price,code,stock,category,status,thumbails} = req.body
+    if(!title || !description || !price || !code || !stock || !category || !thumbails)
+     return res.send({status:"Error",error:"Faltan datos"})
+    let result = await productsModel.create({
+        title,
+        description,
+        price,
+        code,
+        stock,
+        category,
+        status,
+        thumbails
+    })
+    //req.io.emit("updatedProducts",await productsModel.find())
+    res.send({status:'success',payload: result})
+      
+})
+
+//ok
+//Add product
+router.post('/realtimeproducts',async(req, res) => {
     const product = req.body
     const productAdded = await productsModel.create(product)
     //req.io.emit("updatedProducts",await productsModel.find())
     res.json({status:'Exito',productAdded})
       
 })
-//Add product
-router.post('/realtimeproducts',async(req, res) => {
-    //obtengo los datos segun el schema definido
+
+
+router.post('/realtimeproducts', async (req, res) => {
+    let products = await productsModel.find() 
+
     const product = req.body
     const productAdded = await productsModel.create(product)
-    //req.io.emit("updatedProducts",await productsModel.find())
-    res.json({status:'Exito',productAdded})
-      
+    //products.push(productAdded)
+    console.log(productAdded)
+    res.json({ status: "success", productAdded })
+    io.emit('showProducts', products)    
 })
 
 
@@ -44,8 +73,6 @@ router.delete('/:pid', async (req, res) => {
       let result = await productsModel.deleteOne({_id:pid})
       res.send({status:'Exito',payload:result})
 })
-
-
 
 
 // Crear productos
@@ -76,7 +103,6 @@ router.delete('/delete/:name', async (req, res) => {
 
 //DeleteById
 router.delete('/:pid', async(req, res) => {   
-   
    const pid = parseInt(req.params.pid)  //Guardo el parametro recibido
    const deleteProduct =  await productsModel.deleteOne(pid)
    if(deleteProduct)
@@ -90,43 +116,14 @@ router.delete('/realtimeproducts/:pid', async (req, res) => {
     const pid = req.params.pid
     await productsModel.deleteOne(pid)
     const products = await productsModel.find()
-
     res.re({status: "success", msg: "Product deleted"})
     io.emit('showProducts', products)
 })
 
 
-router.post('/realtimeproducts', async (req, res) => {
-    let products = await productsModel.find() 
-
-    const product = req.body
-    const productAdded = await productsModel.create(product)
-   //products.push(productAdded)
-    console.log(productAdded)
-    res.json({ status: "success", productAdded })
-    io.emit('showProducts', products)    
-})
 
 
-router.get('/realtimeproducts', async (req, res) => {
-    let products = await productsModel.find()
-    io.on('connection', socket => {
-        
-        socket.on('addProduct', async data => {
-            const productAdded = await productsModel.create(data)
-            io.emit('showProducts', products)
-        })
-        
-        socket.on('deleteProduct', async data => {
-            let products = await productsModel.find()
-            await productsModel.deleteOne(data.id)
 
-            const filtered = products.filter(prod => prod.id != data.id)
-            io.emit('showProducts', filtered)
-        })
-    })
-    res.render('realTimeProducts', {products})
-})
 
 
 export default router
