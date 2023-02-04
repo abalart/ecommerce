@@ -5,19 +5,20 @@ import cartsModel from '../dao/models/carts.model.js'
 const router = Router()
 
 
-
+//Create cart
 router.post('/', async (req, res) => {
-    const newCart = req.body
-    const dartAdded = await cartsModel.create(newCart)
-    res.json({status:'Exito',productAdded})
+    const newCart = await cartsModel.create({})
+    res.json({status:'Exito',newCart})
 
 })
 
-//findAll
-router.get('/', async (req, res) => {
-    const carts = await cartsModel.find()
+//find cart by id
+router.get('/:cid', async (req, res) => {
+    const cid =  req.params.cid
+    const cart = await cartsModel.findOne({_id: cid}).populate("products.id")
     res.send({carts})
 })
+
 
 router.post('/:cid/product/:pid', async (req, res) => {
     const pid = await cartsModel.findById(req.params.id);
@@ -26,27 +27,24 @@ router.post('/:cid/product/:pid', async (req, res) => {
 })
 
 
-
+  //delete cart
 router.delete("/:cid/product/:pid", async (req, res) => {
     const cartID = req.params.cid
     const productID = req.params.pid
-
     const cart = await cartsModel.findById(cartID)
     if(!cart) return res.status(404).json({status: "error", error: "Cart Not Found"})
-
     const productIDX = cart.products.findIndex(p => p.id == productID)
-    
     if (productIDX <= 0) return res.status(404).json({status: "error", error: "Product Not Found on Cart"})
-
     cart.products = cart.products.splice(productIDX, 1)
     await cart.save()
-    
     res.json({status: "Success", cart})
 })
 
+ //Agrega un producto al cart
 router.post("/:cid/product/:pid", async (req, res) => {
     const cartID = req.params.cid
     const productID = req.params.pid
+    
     const quantity= req.body.quantity || 1
     const cart = await cartsModel.findById(cartID)
 
@@ -70,5 +68,6 @@ router.post("/:cid/product/:pid", async (req, res) => {
 
 
 //put
+
 
 export default router

@@ -3,78 +3,11 @@ import {Router} from 'express'
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import productsModel from '../dao/models/products.model.js'
-
-
-/**
- 
-Con base en nuestra implementación actual de productos, modificar el método GET / para que cumpla con los siguientes puntos:
-Deberá poder recibir por query params un limit (opcional), una page (opcional), un sort (opcional) y un query (opcional)
--limit permitirá devolver sólo el número de elementos solicitados al momento de la petición, en caso de no recibir limit, éste será de 10.
-page permitirá devolver la página que queremos buscar, en caso de no recibir page, ésta será de 1
-
-El método GET deberá devolver un objeto con el siguiente formato:
-{
-status:success/error
-payload: Resultado de los productos solicitados
-totalPages: Total de páginas
-prevPage: Página anterior
-nextPage: Página siguiente
-page: Página actual
-hasPrevPage: Indicador para saber si la página previa existe
-hasNextPage: Indicador para saber si la página siguiente existe.
-prevLink: Link directo a la página previa (null si hasPrevPage=false)
-nextLink: Link directo a la página siguiente (null si hasNextPage=false)
-}
-
-
- */
+import io from '../app.js'  //Para realTime
 
 const router = Router()
 
-// Listar productos http://127.0.0.1:8080/api/products
-router.get('/', async (req, res) => {
-  
-    const limit = req.query?.limit || 10
-    const page = req.query?.page || 1
-    const filter = req.query?.filter || ''
-    const sortQuery = req.query?.sort || ''
-    const sortQueryOrder = req.query?.sortorder || 'desc'
 
-    const search = {}
-    if(filter) {
-        search.title = filter
-    }
-    const sort = {}
-    if (sortQuery) {
-        sort[sortQuery] = sortQueryOrder
-    }
-
-    const options = {
-        limit, 
-        page, 
-        sort,
-        lean: true
-    }
-    let status = "Success"
-    const data = await productsModel.paginate(search, options) //Le envio los 2 parametros de paginate
-    if(!data) 
-       {
-        status = "Success"
-        //console.log(JSON.stringify(data, null, 2, '\t'));
-        res.render('products', {data})
-
-        res.render({
-        result:status,
-        payload: data
-     })
-        return res.status(404).json({status: "error", error: "Product Not Found"}
-        
-        )}
-    else 
-       { status = "Error"
-        return res.status(200).json({status: "Success"})}
-
-})
 
 
 // crear productos
@@ -86,7 +19,7 @@ router.post('/create',async(req, res) => {
     res.json({status:'Exito',productAdded})
       
 })
-
+//Add product
 router.post('/realtimeproducts',async(req, res) => {
     //obtengo los datos segun el schema definido
     const product = req.body
@@ -113,14 +46,6 @@ router.delete('/:pid', async (req, res) => {
 })
 
 
-//Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts/)
-router.get('/:realtimeproducts', async (req, res) => {
-    const products = await productsModel.find().lean()//.lean().exec()
-    res.render('realtimeproducts',{
-        data: products
-    })
-    
-})
 
 
 // Crear productos
@@ -161,6 +86,47 @@ router.delete('/:pid', async(req, res) => {
  })
 
 
+router.delete('/realtimeproducts/:pid', async (req, res) => {
+    const pid = req.params.pid
+    await productsModel.deleteOne(pid)
+    const products = await productsModel.find()
+
+    res.re({status: "success", msg: "Product deleted"})
+    io.emit('showProducts', products)
+})
+
+
+router.post('/realtimeproducts', async (req, res) => {
+    let products = await productsModel.find() 
+
+    const product = req.body
+    const productAdded = await productsModel.create(product)
+   //products.push(productAdded)
+    console.log(productAdded)
+    res.json({ status: "success", productAdded })
+    io.emit('showProducts', products)    
+})
+
+
+router.get('/realtimeproducts', async (req, res) => {
+    let products = await productsModel.find()
+    io.on('connection', socket => {
+        
+        socket.on('addProduct', async data => {
+            const productAdded = await productsModel.create(data)
+            io.emit('showProducts', products)
+        })
+        
+        socket.on('deleteProduct', async data => {
+            let products = await productsModel.find()
+            await productsModel.deleteOne(data.id)
+
+            const filtered = products.filter(prod => prod.id != data.id)
+            io.emit('showProducts', filtered)
+        })
+    })
+    res.render('realTimeProducts', {products})
+})
 
 
 export default router

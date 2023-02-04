@@ -1,62 +1,86 @@
 //En ese archivo tendremos la logica de renderizado, de donde tomar CSS,como conectar con handlebar,etc
+//el router de vistas siempre debe responder con res.render.
+//Se ponen las rutas completas
 import express from 'express'
-import io from '../app.js'  //Para realTime
 import productsModel from '../dao/models/products.model.js'
 
 const router = express.Router()
 
+
+
+//Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts/)
+router.get('/api/products/realtimeproducts', async (req, res) => {
+    const products = await productsModel.find().lean()
+    res.render('realtimeproducts',{
+        data: products
+    })
+    
+})
+
+
+// Listar productos http://127.0.0.1:8080/api/products
+router.get('/api/products/paginate', async (req, res) => {
+  
+    const limit = req.query?.limit || 10
+    const page = req.query?.page || 1
+    const filter = req.query?.filter || ''
+    const sortQuery = req.query?.sort || ''
+    const sortQueryOrder = req.query?.sortorder || 'desc'
+
+    const search = {}
+    if(filter) {
+        search.title = filter
+    }
+    const sort = {}
+    if (sortQuery) {
+        sort[sortQuery] = sortQueryOrder
+    }
+
+    const options = {
+        limit, 
+        page, 
+        sort,
+        lean: true,
+        
+    }
+
+    let status = "Success"
+    const data = await productsModel.paginate(search, options) //Le envio los 2 parametros de paginate
+
+    //data.prevLink = data.hasPrevPage ? `/users?page=${data.prevPage}` : ''
+    //data.nextLink = data.hasNextPage ? `/users?page=${data.nextPage}` : ''
+
+    if(data) 
+       {
+        status = "Success"
+        console.log(JSON.stringify(data, null, 2, '\t'));
+        res.render('products', {data})
+
+        res.render({
+        result:status,
+        payload: data,
+       
+     })
+        return res.status(404).json({status: "error", error: "Product Not Found"}
+        
+        )}
+    
+
+})
+
  
 //Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/)
-router.get('/',async (req,res)=>{
+router.get('/api/products',async (req,res)=>{
    const list = await productsModel.find() //Obtengo lista desde la BD
-   res.render('home',{list})
+   res.render('home',{list})  //Acá indico que en homo que seia / muestre la lista de productos
 })
 
-//realtimeproductst: Get,post,delete
-
-router.post('/realtimeproducts', async (req, res) => {
-    let products = await productsModel.find() 
-
-    const product = req.body
-    const productAdded = await productsModel.create(product)
-   //products.push(productAdded)
-    console.log(productAdded)
-    res.json({ status: "success", productAdded })
-    io.emit('showProducts', products)    
-})
-/*
-router.get('/realtimeproducts', async (req, res) => {
-    let products = await productsModel.find()
-    io.on('connection', socket => {
-        console.log('New client connected')
-
-        socket.on('addProduct', async data => {
-            const productAdded = await productsModel.create(data)
-            io.emit('showProducts', products)
-        })
-        
-        socket.on('deleteProduct', async data => {
-            let products = await productsModel.find()
-            await productsModel.deleteOne(data.id)
-
-            const filtered = products.filter(prod => prod.id != data.id)
-            io.emit('showProducts', filtered)
-        })
-    })
-    res.render('realTimeProducts', {products})
-})*/
 
 
 
 
-router.delete('/realtimeproducts/:pid', async (req, res) => {
-    const pid = req.params.pid
-    await productsModel.deleteOne(pid)
-    const products = await productsModel.find()
 
-    res.re({status: "success", msg: "Product deleted"})
-    io.emit('showProducts', products)
-})
+
 
 
 export default router

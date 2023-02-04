@@ -22,9 +22,8 @@ app.set('view engine', 'handlebars')
 app.use(express.static(__dirname+'/public')) //Seteamos nuestra carpeta public
  
 // Configuracion de rutas
-app.use('/', routerViews) //Tomo las logicas de renderizacion desde el archivo views.router
-app.use('/realtimeproducts', routerViews)
-app.use('/api/products/',productRouter)  //Conecto router y me traigo todos los endpoints, en POSTMAN siempre va a ser /api/products/ + la ruta que se defina en el archivo router
+app.use('/', routerViews) //las rutas sin api, corresponden a vistas a partir de ahora.
+app.use('/api/products',productRouter)  //Conecto router y me traigo todos los endpoints, en POSTMAN siempre va a ser /api/products/ + la ruta que se defina en el archivo router
 app.use('/api/cart',cart) //Conecto router y me traigo todos los endpoints
 //Agrego router users
 app.use('/api/users',users) //Conecto router y me traigo todos los endpoints
