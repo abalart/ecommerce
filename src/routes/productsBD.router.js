@@ -46,82 +46,35 @@ router.post('/realtimeproducts',async(req, res) => {
       
 })
 
-
-router.post('/realtimeproducts', async (req, res) => {
-    let products = await productsModel.find() 
-
-    const product = req.body
-    const productAdded = await productsModel.create(product)
-    //products.push(productAdded)
-    console.log(productAdded)
-    res.json({ status: "success", productAdded })
-    io.emit('showProducts', products)    
-})
-
-
+//ok
 // Actualizar un producto
 router.put('/:pid', async (req, res) => {
-    let  {pid} = req.params.id
-    let propToUpdate = req.body.title  
-    let result = await productsModel.updateOne({_id:{$eq:pid}},propToUpdate)
+    let  {pid} = req.params
+    let propToUpdate = req.body 
+    let result = await productsModel.updateOne({_id:pid},propToUpdate)
     res.send({status:'Exito',payload:result})
 })
 
-// Obtener un producto
-router.delete('/:pid', async (req, res) => {
-      const pid = await productsModel.findById(req.params.id);
-      let result = await productsModel.deleteOne({_id:pid})
-      res.send({status:'Exito',payload:result})
-})
 
-
-// Crear productos
-router.post('/', async (req, res) => {
-    const NewProduct = req.body
-    console.log(NewProduct);
-
-    const productGenerated = new productsModel(NewProduct)
-    await productGenerated.save()
-
-    console.log(productGenerated);
-    res.send({status:'Exito',payload:productGenerated})
-    
-})
-
-// Borrar un producto por nombre
-router.delete('/delete/:name', async (req, res) => {
-   const name = parseInt(req.params.name)  //Guardo el parametro recibido
-   const deleteProduct =  await productsModel.deleteOne(name)
-   if(deleteProduct)
-   res.send("Producto eliminado")
-   else
-   return res.status(404).send('Product to eliminate not found')
-    res.send('Borrando producto')
+// Obtener un producto por id
+router.get('/:pid', async (req, res) => {
+      const {pid} = parseInt(req.params.pid)
+      let prod = await productsModel.findById(pid).exec()
+      console.log()
+      res.send({status:'Exito',payload:prod})
 })
 
 
 
 //DeleteById
 router.delete('/:pid', async(req, res) => {   
-   const pid = parseInt(req.params.pid)  //Guardo el parametro recibido
+   const {pid} = parseInt(req.params.pid)  //Guardo el parametro recibido
    const deleteProduct =  await productsModel.deleteOne(pid)
    if(deleteProduct)
    res.send("Producto eliminado")
    else
    return res.status(404).send('Product to eliminate not found')
  })
-
-
-router.delete('/realtimeproducts/:pid', async (req, res) => {
-    const pid = req.params.pid
-    await productsModel.deleteOne(pid)
-    const products = await productsModel.find()
-    res.re({status: "success", msg: "Product deleted"})
-    io.emit('showProducts', products)
-})
-
-
-
 
 
 
