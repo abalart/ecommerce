@@ -60,7 +60,7 @@ router.put('/:pid', async (req, res) => {
 router.get('/:pid', async (req, res) => {
       const {pid} = parseInt(req.params.pid)
       let prod = await productsModel.findById(pid).exec()
-      console.log()
+      console.log(prod)
       res.send({status:'Exito',payload:prod})
 })
 
@@ -69,14 +69,12 @@ router.get('/:pid', async (req, res) => {
 //DeleteById
 router.delete('/:pid', async(req, res) => {   
    const {pid} = parseInt(req.params.pid)  //Guardo el parametro recibido
-   const deleteProduct =  await productsModel.deleteOne(pid)
+   const deleteProduct =  await productsModel.deleteOne({_id:pid})
+   console.log(deleteProduct)
    if(deleteProduct)
    res.send("Producto eliminado")
    else
    return res.status(404).send('Product to eliminate not found')
  })
-
-
-
 
 export default router

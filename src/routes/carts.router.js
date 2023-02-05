@@ -4,27 +4,39 @@ import productModel from '../dao/models/products.model.js'
 
 const router = Router()
 
-
-//Create cart
+//ok
+//Create empty cart
 router.post('/', async (req, res) => {
     const newCart = await cartsModel.create({})
     res.json({status:'Exito',newCart})
 
 })
 
+//ok
+//Add product to cart
+router.post('/:cid/product/:pid', async (req, res) => {
+//user=cart 
+//courses = products
+    const cid = req.params.cid
+    const pid = req.params.pid  //Se inserta una ref al producto
+    //const quantity = req.body
+    //console.log(quantity)
+    const cart = await cartsModel.findById({_id:cid});   //Obtengo el carrito
+    if(!cart) return res.status(404).json({status:"Not Found",error:"Cart not found"})
+    cart.products.push(pid) //Inserto produto en carrito
+    const result = await cartsModel.updateOne({_id:cid},cart)
+    res.send({status:'Exito',payload:result})
+})
+
+
 //find cart by id
 router.get('/:cid', async (req, res) => {
     const cid =  req.params.cid
     const cart = await cartsModel.findOne({_id: cid}).populate("products.id")
-    res.send({carts})
+    res.send(cart)
 })
 
 
-router.post('/:cid/product/:pid', async (req, res) => {
-    const pid = await cartsModel.findById(req.params.id);
-    let result = await cartsModel.deleteOne({_id:pid})
-    res.send({status:'Exito',payload:result})
-})
 
 
   //delete cart
