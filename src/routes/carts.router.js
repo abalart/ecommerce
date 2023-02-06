@@ -12,34 +12,36 @@ router.post('/', async (req, res) => {
 
 })
 
-//ok
+//No funciona populate, no muestra la info del producto
 //Add product to cart
 router.post('/:cid/product/:pid', async (req, res) => {
 //user=cart 
 //courses = products
     const cid = req.params.cid
     const pid = req.params.pid  //Se inserta una ref al producto
-    //const quantity = req.body
-    //console.log(quantity)
+    const q = req.params.quantity
+    console.log(q)
     const cart = await cartsModel.findById({_id:cid});   //Obtengo el carrito
     if(!cart) return res.status(404).json({status:"Not Found",error:"Cart not found"})
-    cart.products.push(pid) //Inserto produto en carrito
+    cart.products.push(pid) //Inserto referencia al produto en carrito
     const result = await cartsModel.updateOne({_id:cid},cart)
+    let cartToFind = await cartsModel.find({_id:cid}).populate('products.id')
+    console.log(JSON.stringify(cartToFind, null, "\t"))
     res.send({status:'Exito',payload:result})
 })
 
-
+//ok
 //find cart by id
 router.get('/:cid', async (req, res) => {
     const cid =  req.params.cid
     const cart = await cartsModel.findOne({_id: cid}).populate("products.id")
-    res.send(cart)
+    console.log(JSON.stringify(cart, null, "\t"))
+    res.send({status:'Exito',payload:cart})
 })
 
 
 
-
-  //delete cart
+  //delete product from cart
 router.delete("/:cid/product/:pid", async (req, res) => {
     const cartID = req.params.cid
     const productID = req.params.pid
