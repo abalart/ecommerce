@@ -7,10 +7,18 @@ import routerViews from './routes/views.router.js'
 import __dirname from './utils.js'
 import mongoose from 'mongoose'
 import users from './routes/users.router.js'
-import FileStore from 'session-file-store'
 import MongoStore from 'connect-mongo'
+import cookieParser from 'cookie-parser'
+import session from 'express-session'
+//import initializrPassport from "./config/passpor.config.js";
+//import passport from "passport";
+
 
 const app = express()
+
+
+const MongoUri = "mongodb+srv://abalart:yD3VgDOgFUHlnpei@ecommerce.mkzzehb.mongodb.net/test"
+const MongoDbName = "ecommerce"
 
 // Para traer info de post como JSON
 app.use(express.json())
@@ -37,51 +45,84 @@ const io = new Server(httpServer) // Init Servers
 
 /////////Cokies y manejo de sesion 
 
+app.get('/setCookie',(req,res) => {
+    res.cookie('nombreCookie',{maxAge: 3000}).send("cookie") 
+})
 
-app.use(cookieParser())
+app.get('/getCookies',(req,res) => {
+    
+    res.send(req.cookies)
+})
+
+app.get('/cookie/delete', (req, res) => {
+    res.clearCookie('nombreCookie').send('Cookie Removed')
+})
+
+
+
+
+app.get('/cookie/setsigned', (req, res) => {
+    res.cookie('nombreCookieFirmada', 'un texto', {signed: true}).send('Cookie seteada')
+})
+
+app.use(cookieParser('mysecret'))
+
+//Guardar sesion en BD
 
 app.use(session({
 
     store:MongoStore.create({
-       mongoURL: "mongodb+srv://abalart:yD3VgDOgFUHlnpei@ecommerce.mkzzehb.mongodb.net/test",
-       mongoOptions: {useNewUrlParser: true,useUnifielTopology: true},
-       ttl:15,
+       mongoUrl: MongoUri,
+       dbName: MongoDbName,
     }),
-    secret:"df6g4df5g",
+    secret:"mysecret",
     resave:false,
     saveUninitialized:true
 }))
 
- /*
-app.get('/cookie/set', (req, res) => {
-    //res.cookie('CookieDeR2', 'Thanos siempre tuvo razon', {maxAge: 5000}).send('Cookie seteada')
-    res.cookie('cookieNormal', 'Thanos siempre tuvo razon').send('Cookie seteada')
-})
+ 
 
-app.get('/cookie/get',  (req, res) => {
-    res.send( {
-        signed: req.signedCookies,
-        normals: req.cookies
-    })
-})
-app.get('/cookie/delete', (req, res) => {
-    res.clearCookie('CookieDeR2').send('Cookie Removed')
-})
 
-app.get('/cookie/setsigned', (req, res) => {
-    res.cookie('CookieDeR2', 'Thanos siempre tuvo razon', {signed: true}).send('Cookie seteada')
-})
-*/
 //Conexion con la BD
 mongoose.set('strictQuery', false)
-const uri = "mongodb+srv://abalart:yD3VgDOgFUHlnpei@ecommerce.mkzzehb.mongodb.net/test"
-mongoose.connect(uri,
-{dbName:'ecommerce'},(error) =>{
+mongoose.connect(MongoUri,
+{dbName:MongoDbName},(error) =>{
     if(!error){
         console.log("Conexión con BD establecida")
         return 
     }
 })
+
+
+app.use(session({
+
+    secret:"mysecret",
+    resave:true, //Mantiene la sesion viva
+    saveUninitialized:true //Permite guardar cualquier sesion 
+}))
+
+//Sesion
+
+app.get('/session',(req,res) =>{
+    if(req.session.counter){
+        req.session.counter++
+        res.send(`Se ha visitado ${req.session.counter} veces`)
+    }
+    else{
+        req.session.counter=1
+        res.send("Bienvenido")
+    }
+})
+
+app.get('/logout',(req,res) =>{
+    req.session.destroy(error =>{
+        if(!err)
+            res.send("Logut OK")
+        else res.send({status:"Logout ERROR",body:err})
+    })
+        
+})
+
 
 export default io
 
