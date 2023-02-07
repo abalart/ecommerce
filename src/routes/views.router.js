@@ -6,7 +6,11 @@ import productsModel from '../dao/models/products.model.js'
 
 const router = express.Router()
 
-
+//Pagina de inicio
+router.get('/',async (req,res)=>{
+   
+   res.render('home')  
+})
 
 //Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts)
 router.get('/api/products/realtimeproducts', async (req, res) => {
@@ -17,7 +21,7 @@ router.get('/api/products/realtimeproducts', async (req, res) => {
 })
 
 
-// Listar productos http://127.0.0.1:8080/api/products
+// Listar productos con parametros http://127.0.0.1:8080/api/paginate
 router.get('/api/products/paginate', async (req, res) => {
   
     const limit = req.query?.limit || 10
@@ -46,8 +50,6 @@ router.get('/api/products/paginate', async (req, res) => {
     let status = "Success"
     const data = await productsModel.paginate(search, options) //Le envio los 2 parametros de paginate
 
-    //data.prevLink = data.hasPrevPage ? `/users?page=${data.prevPage}` : ''
-    //data.nextLink = data.hasNextPage ? `/users?page=${data.nextPage}` : ''
 
     if(data) 
        {
@@ -66,20 +68,6 @@ router.get('/api/products/paginate', async (req, res) => {
     
 
 })
-
- /*
-//Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/)
-router.get('/list',async (req,res)=>{
-   const list = await productsModel.find() //Obtengo lista desde la BD
-   res.render('home',{list})  //Acá indico que en homo que seia / muestre la lista de productos
-})
-*/
-
-
-
-
-
-
 
 
 export default router

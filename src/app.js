@@ -16,7 +16,7 @@ import session from 'express-session'
 
 const app = express()
 
-
+//Mi DB
 const MongoUri = "mongodb+srv://abalart:yD3VgDOgFUHlnpei@ecommerce.mkzzehb.mongodb.net/test"
 const MongoDbName = "ecommerce"
 
@@ -28,6 +28,7 @@ app.use(express.urlencoded({ extended: true }))
 app.engine('handlebars',handlebars.engine()) //Inicializo el motor de planillas
 app.set('views',__dirname +'/views')  //Le paso la ruta donde tiene que buscar las pantallas
 app.set('view engine', 'handlebars')
+
 // Carpeta publica
 app.use(express.static(__dirname+'/public')) //Seteamos nuestra carpeta public
  
@@ -43,23 +44,19 @@ const httpServer = app.listen(8080,() => console.log('Server arriba'))
 const io = new Server(httpServer) // Init Servers
 
 
-/////////Cokies y manejo de sesion 
+//Cokies y manejo de sesion 
 
 app.get('/setCookie',(req,res) => {
     res.cookie('nombreCookie',{maxAge: 3000}).send("cookie") 
 })
 
 app.get('/getCookies',(req,res) => {
-    
     res.send(req.cookies)
 })
 
 app.get('/cookie/delete', (req, res) => {
     res.clearCookie('nombreCookie').send('Cookie Removed')
 })
-
-
-
 
 app.get('/cookie/setsigned', (req, res) => {
     res.cookie('nombreCookieFirmada', 'un texto', {signed: true}).send('Cookie seteada')
@@ -80,9 +77,6 @@ app.use(session({
     saveUninitialized:true
 }))
 
- 
-
-
 //Conexion con la BD
 mongoose.set('strictQuery', false)
 mongoose.connect(MongoUri,
@@ -93,7 +87,6 @@ mongoose.connect(MongoUri,
     }
 })
 
-
 app.use(session({
 
     secret:"mysecret",
@@ -102,7 +95,6 @@ app.use(session({
 }))
 
 //Sesion
-
 app.get('/session',(req,res) =>{
     if(req.session.counter){
         req.session.counter++
