@@ -12,6 +12,8 @@ router.get('/register', (req, res) => {
 router.post('/register', passport.authenticate('register', { failureRedirect: '/session/failregister' }), async (req, res) => {
     res.redirect('/session/login')
 })
+
+//Caso de error
 router.get('/failregister', (req, res) => {
     console.log('Fail Strategy');
     res.send({ error: "Failed" })
@@ -33,7 +35,6 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/sessio
         email: req.user.email,
         age: req.user.age,
     }
-
     res.redirect('/products')
 })
 router.get('/faillogin', (req, res) => {
