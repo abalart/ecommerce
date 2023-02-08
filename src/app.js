@@ -8,10 +8,9 @@ import __dirname from './utils.js'
 import mongoose from 'mongoose'
 import users from './routes/users.router.js'
 import MongoStore from 'connect-mongo'
-import cookieParser from 'cookie-parser'
 import session from 'express-session'
-//import initializrPassport from "./config/passpor.config.js";
-//import passport from "passport";
+import initializePassport from "./config/passport.config.js"
+import passport from "passport"
 
 
 const app = express()
@@ -44,26 +43,6 @@ const httpServer = app.listen(8080,() => console.log('Server arriba'))
 const io = new Server(httpServer) // Init Servers
 
 
-//Cokies y manejo de sesion 
-
-app.get('/setCookie',(req,res) => {
-    res.cookie('nombreCookie',{maxAge: 3000}).send("cookie") 
-})
-
-app.get('/getCookies',(req,res) => {
-    res.send(req.cookies)
-})
-
-app.get('/cookie/delete', (req, res) => {
-    res.clearCookie('nombreCookie').send('Cookie Removed')
-})
-
-app.get('/cookie/setsigned', (req, res) => {
-    res.cookie('nombreCookieFirmada', 'un texto', {signed: true}).send('Cookie seteada')
-})
-
-app.use(cookieParser('mysecret'))
-
 //Guardar sesion en BD
 
 app.use(session({ //Acá le indico la base de datos donde guardar la sesion
@@ -73,9 +52,13 @@ app.use(session({ //Acá le indico la base de datos donde guardar la sesion
        dbName: MongoDbName,
     }),
     secret:"mysecret",
-    resave:false,
-    saveUninitialized:true
+    resave:false, //Mantiene la sesion viva
+    saveUninitialized:true //Permite guardar cualquier sesion 
 }))
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 //Conexion con la BD
 mongoose.set('strictQuery', false)
@@ -85,35 +68,9 @@ mongoose.connect(MongoUri,
         console.log("Conexión con BD establecida")
         return 
     }
+
 })
 
-app.use(session({
-
-    secret:"mysecret",
-    resave:true, //Mantiene la sesion viva
-    saveUninitialized:true //Permite guardar cualquier sesion 
-}))
-
-//Sesion
-app.get('/session',(req,res) =>{
-    if(req.session.counter){
-        req.session.counter++
-        res.send(`Se ha visitado ${req.session.counter} veces`)
-    }
-    else{
-        req.session.counter=1
-        res.send("Bienvenido")
-    }
-})
-
-app.get('/logout',(req,res) =>{
-    req.session.destroy(error =>{
-        if(!err)
-            res.send("Logut OK")
-        else res.send({status:"Logout ERROR",body:err})
-    })
-        
-})
 
 
 export default io

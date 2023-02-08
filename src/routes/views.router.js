@@ -9,7 +9,7 @@ const router = express.Router()
 //Pagina de inicio
 router.get('/',async (req,res)=>{
    
-   res.render('home')  
+   res.render('sessions/register')  
 })
 
 //Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts)
