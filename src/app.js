@@ -66,7 +66,7 @@ app.use(cookieParser('mysecret'))
 
 //Guardar sesion en BD
 
-app.use(session({
+app.use(session({ //Acá le indico la base de datos donde guardar la sesion
 
     store:MongoStore.create({
        mongoUrl: MongoUri,
