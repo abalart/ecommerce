@@ -3,7 +3,7 @@ import {Router} from 'express'
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import productsModel from '../dao/models/products.model.js'
-import io from '../app.js'  //Para realTime
+//import io from '../app.js'  //Para realTime
 
 const router = Router()
 

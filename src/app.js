@@ -11,6 +11,8 @@ import MongoStore from 'connect-mongo'
 import session from 'express-session'
 import initializePassport from "./config/passport.config.js"
 import passport from "passport"
+import run from "./run.js";
+
 
 
 const app = express()
@@ -61,19 +63,18 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //Conexion con la BD
-mongoose.set('strictQuery', false)
-mongoose.connect(MongoUri,
-{dbName:MongoDbName},(error) =>{
-    if(!error){
-        console.log("Conexión con BD establecida")
-        return 
+mongoose.connect(MongoUri, {dbName: MongoDbName}, (error) => {
+    if(error){
+        console.log("DB No conected...")
+        return
     }
-
+    const httpServer = app.listen(8080, () => console.log("Listening..."))
+    const socketServer = new Server(httpServer)
+    httpServer.on("error", () => console.log("ERROR"))
+    run(socketServer, app)
 })
 
-
-
-export default io
+ 
 
 
 

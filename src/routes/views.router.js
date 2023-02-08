@@ -65,7 +65,6 @@ router.get('/api/products/paginate', async (req, res) => {
         return res.status(404).json({status: "error", error: "Product Not Found"}
         
         )}
-    
 
 })
 
