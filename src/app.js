@@ -3,7 +3,6 @@ import productRouter from './routes/productsBD.router.js'
 import cart from './routes/carts.router.js'
 import handlebars from 'express-handlebars'
 import {Server} from 'socket.io'
-import routerViews from './routes/views.router.js'
 import __dirname from './utils.js'
 import mongoose from 'mongoose'
 import users from './routes/users.router.js'
@@ -34,7 +33,6 @@ app.set('view engine', 'handlebars')
 app.use(express.static(__dirname+'/public')) //Seteamos nuestra carpeta public
  
 // Configuracion de rutas
-app.use('/', routerViews) //las rutas sin api, corresponden a vistas a partir de ahora.
 app.use('/api/products',productRouter)  //Conecto router y me traigo todos los endpoints, en POSTMAN siempre va a ser /api/products/ + la ruta que se defina en el archivo router
 app.use('/api/cart',cart) //Conecto router y me traigo todos los endpoints
 //Agrego router users

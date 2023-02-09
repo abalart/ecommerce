@@ -1,6 +1,5 @@
 import {Router} from 'express'
 import cartsModel from '../dao/models/carts.model.js'
-import productModel from '../dao/models/products.model.js'
 
 const router = Router()
 
@@ -11,6 +10,7 @@ router.post('/', async (req, res) => {
     res.json({status:'Exito',newCart})
 
 })
+
 
 //No funciona populate, no muestra la info del producto
 //Add product to cart

@@ -3,6 +3,15 @@ import passport from "passport";
 
 const router = Router()
 
+
+/*
+//Pagina de inicio
+router.get('/',async (req,res)=>{
+   res.render('sessions/register')  
+})
+ */
+
+
 //Vista para registrar usuarios
 router.get('/register', (req, res) => {
     res.render('sessions/register')
