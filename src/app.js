@@ -12,8 +12,6 @@ import initializePassport from "./config/passport.config.js"
 import passport from "passport"
 import run from "./run.js";
 
-
-
 const app = express()
 
 //Mi DB
@@ -56,6 +54,8 @@ app.use(session({ //Acá le indico la base de datos donde guardar la sesion
     saveUninitialized:true //Permite guardar cualquier sesion 
 }))
 
+
+//Autenticación
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
@@ -66,9 +66,9 @@ mongoose.connect(MongoUri, {dbName: MongoDbName}, (error) => {
         console.log("DB No conected...")
         return
     }
-    const httpServer = app.listen(8080, () => console.log("Listening..."))
+    const httpServer = app.listen(8080, () => console.log("Servidor arriba..."))
     const socketServer = new Server(httpServer)
-    httpServer.on("error", () => console.log("ERROR"))
+    httpServer.on("error in socketServer", () => console.log("ERROR"))
     run(socketServer, app)
 })
 

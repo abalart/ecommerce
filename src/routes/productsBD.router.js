@@ -9,11 +9,11 @@ const router = Router()
 
 //ok
 //127.0.0.1:8080/api/products
-router.get('/', async (req, res) => {
-    let products = await productsModel.find()
-    res.send({products})
+router.get("/:id", async (req, res) => {
+    const id = req.params.id
+    const product = await productsModel.findOne({_id: id})
+    res.render("productDetail", product)
 })
-
 
 // crear productos
 router.post('/create',async(req, res) => {
@@ -45,6 +45,7 @@ router.post('/realtimeproducts',async(req, res) => {
     res.json({status:'Exito',productAdded})
       
 })
+
 
 //ok
 // Actualizar un producto
@@ -79,8 +80,6 @@ router.delete('/:pid', async(req, res) => {
 
 
 //Renders
-
-
 //Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts)
 router.get('/api/products/realtimeproducts', async (req, res) => {
     const products = await productsModel.find().lean()
