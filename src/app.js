@@ -1,16 +1,13 @@
 import express from 'express'
-import productRouter from './routes/productsBD.router.js'
-import cart from './routes/carts.router.js'
 import handlebars from 'express-handlebars'
 import {Server} from 'socket.io'
 import __dirname from './utils.js'
 import mongoose from 'mongoose'
-import users from './routes/users.router.js'
 import MongoStore from 'connect-mongo'
 import session from 'express-session'
 import initializePassport from "./config/passport.config.js"
 import passport from "passport"
-import run from "./run.js";
+import run from "./run.js"; //Concentrador de rutas
 
 const app = express()
 
@@ -29,17 +26,6 @@ app.set('view engine', 'handlebars')
 
 // Carpeta publica
 app.use(express.static(__dirname+'/public')) //Seteamos nuestra carpeta public
- 
-// Configuracion de rutas
-app.use('/api/products',productRouter)  //Conecto router y me traigo todos los endpoints, en POSTMAN siempre va a ser /api/products/ + la ruta que se defina en el archivo router
-app.use('/api/cart',cart) //Conecto router y me traigo todos los endpoints
-//Agrego router users
-app.use('/api/users',users) //Conecto router y me traigo todos los endpoints
-
-// Corriendo el servidor
-const httpServer = app.listen(8080,() => console.log('Server arriba'))
-const io = new Server(httpServer) // Init Servers
-
 
 //Guardar sesion en BD
 
@@ -66,10 +52,10 @@ mongoose.connect(MongoUri, {dbName: MongoDbName}, (error) => {
         console.log("DB No conected...")
         return
     }
-    const httpServer = app.listen(8080, () => console.log("Servidor arriba..."))
-    const socketServer = new Server(httpServer)
-    httpServer.on("error in socketServer", () => console.log("ERROR"))
-    run(socketServer, app)
+     const httpServer = app.listen(8080, () => console.log("Servidor arriba..."))
+     const socketServer = new Server(httpServer)
+     httpServer.on("error", () => console.log("ERROR DE SOCKET"))
+     run(socketServer, app)
 })
 
  

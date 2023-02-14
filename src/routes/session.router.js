@@ -3,6 +3,28 @@ import passport from "passport";
 
 const router = Router()
 
+// Vista de Login en http://127.0.0.1:8080/session/login
+router.get('/login', (req, res) => {
+    res.render('gitlogin')
+})
+
+//Estrategia de Github
+router.get(
+    '/github',
+    passport.authenticate('github', {scope: ['user:email']}),
+    async(req, res) => {}
+)
+
+router.get(
+    '/githubcallback',
+    passport.authenticate('github', {failureRedirect: '/login'}),
+    async(req, res) => {
+        console.log("Callback: ", req.user);
+        req.session.user = req.user
+        console.log("User Session: ", req.session.user);
+        res.redirect('/')
+    }
+)
 
 /*
 //Pagina de inicio
@@ -28,10 +50,13 @@ router.get('/failregister', (req, res) => {
     res.send({ error: "Failed" })
 })
 
-// Vista de Login
+
+
+//Login con autenticacion de terceros
 router.get('/login', (req, res) => {
-    res.render('sessions/login')
+    res.render('loginterceros')
 })
+
 
 // API para login
 router.post('/login', passport.authenticate('login', { failureRedirect: '/session/faillogin' }), async (req, res) => {
