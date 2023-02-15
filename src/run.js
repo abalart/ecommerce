@@ -2,7 +2,7 @@ import productRouter from './routes/productsBD.router.js'
 import cartRouter from "./routes/carts.router.js"
 import chatRouter from "./routes/chat.router.js"
 import messagesModel from "./dao/models/menssages.model.js";
-import productViewsRouter from './routes/productsBD.router.js'
+import productViewsRouter from './routes/products.views.router.js'
 import sessionRouter from './routes/session.router.js'
 
 //Agrupo las rutas de las diferentes APIs en este archivo
@@ -14,7 +14,7 @@ const run = (socketServer, app) => {
     })
 
     app.use("/products", productViewsRouter)
-    app.use("/api/session", sessionRouter)
+    app.use("/session", sessionRouter)
     app.use("/api/products", productRouter)
     app.use("/api/carts", cartRouter)
     app.use("/api/chat", chatRouter)

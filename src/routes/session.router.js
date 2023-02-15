@@ -26,14 +26,6 @@ router.get(
     }
 )
 
-/*
-//Pagina de inicio
-router.get('/',async (req,res)=>{
-   res.render('sessions/register')  
-})
- */
-
-
 //Vista para registrar usuarios
 router.get('/register', (req, res) => {
     res.render('sessions/register')
@@ -54,7 +46,16 @@ router.get('/failregister', (req, res) => {
 
 //Login con autenticacion de terceros
 router.get('/login', (req, res) => {
-    res.render('loginterceros')
+    res.render('gitlogin')
+})
+
+// Vista de Login
+router.get('/login', (req, res) => {
+    res.render('sessions/login')
+})
+
+router.get('/faillogin', (req, res) => {
+    res.send({error: "Fail Login"})
 })
 
 
@@ -70,9 +71,6 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/sessio
         age: req.user.age,
     }
     res.redirect('/products')
-})
-router.get('/faillogin', (req, res) => {
-    res.send({error: "Fail Login"})
 })
 
 router.get('/profile', (req, res) => {
