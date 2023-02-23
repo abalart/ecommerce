@@ -36,4 +36,6 @@ router.get("/", async (req, res) => {
     res.render('products', {data, user})
 })
 
+
+
 export default router

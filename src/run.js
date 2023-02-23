@@ -1,4 +1,4 @@
-import productRouter from './routes/productsBD.router.js'
+import productRouter from './routes/products.router.js'
 import cartRouter from "./routes/carts.router.js"
 import chatRouter from "./routes/chat.router.js"
 import messagesModel from "./dao/models/menssages.model.js";

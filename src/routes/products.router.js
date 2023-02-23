@@ -38,7 +38,7 @@ router.post('/create',async(req, res) => {
 
 //ok
 //Add product
-router.post('/realtimeproducts',async(req, res) => {
+router.post('/products',async(req, res) => {
     const product = req.body
     const productAdded = await productsModel.create(product)
     //req.io.emit("updatedProducts",await productsModel.find())
@@ -81,7 +81,7 @@ router.delete('/:pid', async(req, res) => {
 
 //Renders
 //Listado de productos que se van a renderisar en localhost (al ingresar a http://127.0.0.1:8080/api/products/realtimeproducts)
-router.get('/api/products/realtimeproducts', async (req, res) => {
+router.get('/realtimeproducts', async (req, res) => {
     const products = await productsModel.find().lean()
     res.render('realtimeproducts',{
         data: products
