@@ -7,8 +7,14 @@ import productsModel from '../dao/models/products.model.js'
 
 const router = Router()
 
-//ok
+//Obtiene la lista de productos
 //127.0.0.1:8080/api/products
+router.get("/", async (req, res) => {
+    const product = await productsModel.find()
+    res.send(product)
+})
+
+//Renderiza detalles de un produto
 router.get("/:id", async (req, res) => {
     const id = req.params.id
     const product = await productsModel.findOne({_id: id})

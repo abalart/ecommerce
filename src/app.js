@@ -8,12 +8,10 @@ import session from 'express-session'
 import initializePassport from "./config/passport.config.js"
 import passport from "passport"
 import run from "./run.js"; //Concentrador de rutas
+import config from './config/config.js'
 
 const app = express()
 
-//Mi DB
-const MongoUri = "mongodb+srv://abalart:yD3VgDOgFUHlnpei@ecommerce.mkzzehb.mongodb.net/test"
-const MongoDbName = "ecommerce"
 
 // Para traer info de post como JSON
 app.use(express.json())
@@ -32,10 +30,10 @@ app.use(express.static(__dirname+'/public')) //Seteamos nuestra carpeta public
 app.use(session({ //Acá le indico la base de datos donde guardar la sesion
 
     store:MongoStore.create({
-       mongoUrl: MongoUri,
-       dbName: MongoDbName,
+       mongoUrl: config.mongoUrl,
+       dbName: config.dbName,
     }),
-    secret:"mysecret",
+    secret: config.secret,
     resave:false, //Mantiene la sesion viva
     saveUninitialized:true //Permite guardar cualquier sesion 
 }))
@@ -47,12 +45,12 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //Conexion con la BD
-mongoose.connect(MongoUri, {dbName: MongoDbName}, (error) => {
+mongoose.connect(config.mongoUrl, {dbName: config.dbName}, (error) => {
     if(error){
         console.log("DB No conected...")
         return
     }
-     const httpServer = app.listen(8080, () => console.log("Servidor arriba..."))
+     const httpServer = app.listen(config.port, () => console.log("Servidor arriba..."))
      const socketServer = new Server(httpServer)
      httpServer.on("error", () => console.log("ERROR DE SOCKET"))
      run(socketServer, app)
