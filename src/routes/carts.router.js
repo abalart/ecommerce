@@ -1,8 +1,17 @@
 import {Router} from 'express'
 import cartsModel from '../dao/models/carts.model.js'
+import {getCartById,createCart,addProductToCart,deleteCart} from '../controller/carts.controller.js'
 
 const router = Router()
 
+
+router.get('/',getCartById)
+router.post('/:cid',createCart)
+router.post('/:cid/product/:pid',addProductToCart)
+router.delete('/:cid/product/:pid',deleteCart)
+
+////////////////////////////////////////////////////
+/*
 //ok
 //Create empty cart
 router.post('/', async (req, res) => {
@@ -78,10 +87,6 @@ router.post("/:cid/product/:pid", async (req, res) => {
 
 
     res.json({status: "Success", cart})
-})
-
-
-
-
+})*/
 
 export default router
