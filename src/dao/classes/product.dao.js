@@ -20,7 +20,7 @@ export default class Product{
             thumbails
     })
     //req.io.emit("updatedProducts",await productsModel.find())
-             res.send({status:'success',payload: result})    
+            res.send({status:'success',payload: result})    
             return result
         }catch(error){
             console.log(error)
@@ -28,7 +28,7 @@ export default class Product{
           }
       }
 
-
+      
     getProductById = async(pid)=>{
         try{
            const {pid} = parseInt(req.params.pid)
@@ -42,7 +42,6 @@ export default class Product{
 
 
     deleteProduct = async(id)=>{ 
-
         const {pid} = parseInt(req.params.pid)  //Guardo el parametro recibido
         const deleteProduct =  await productsModel.deleteOne({_id:pid})
         console.log(deleteProduct)
@@ -52,8 +51,8 @@ export default class Product{
         return res.status(404).send('Product to eliminate not found')
         }
 
-        //Obtiene la lista de productos
-        //127.0.0.1:8080/api/products
+    //Obtiene la lista de productos
+    //127.0.0.1:8080/api/products
     getProducts = async() => {
        const products = await productsModel.find()
        res.send(products)
@@ -73,7 +72,6 @@ export default class Product{
     }
 
     addProduct = async() => {
-        
          const product = req.body
          const productAdded = await productsModel.create(product)
          //req.io.emit("updatedProducts",await productsModel.find())
