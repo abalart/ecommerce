@@ -1,6 +1,6 @@
 import cartsModel from "../models/carts.model.js";
 
-export default class cart{
+export default class Cart{
 
   
       createCart = async()=>{
@@ -10,21 +10,21 @@ export default class cart{
         }catch(error){
             console.log(error)
             return null
-        }
-    }
+          }
+      }
    
        addProductToCart = async(cid,pid)=>{
         try{
-                const cid = req.params.cid
-                const pid = req.params.pid  //Se inserta una ref al producto
-                const q = req.params.quantity
-                const cart = await cartsModel.findById({_id:cid});   //Obtengo el carrito
-                if(!cart) return res.status(404).json({status:"Not Found",error:"Cart not found"})
-                cart.products.push(pid) //Inserto referencia al produto en carrito
-                const result = await cartsModel.updateOne({_id:cid},cart)
-                let cartToFind = await cartsModel.find({_id:cid}).populate('products.id')
-                console.log(JSON.stringify(cartToFind, null, "\t"))
-                return  cartToFind
+            const cid = req.params.cid
+            const pid = req.params.pid  //Se inserta una ref al producto
+            const q = req.params.quantity
+            const cart = await cartsModel.findById({_id:cid});   //Obtengo el carrito
+            if(!cart) return res.status(404).json({status:"Not Found",error:"Cart not found"})
+            cart.products.push(pid) //Inserto referencia al produto en carrito
+            const result = await cartsModel.updateOne({_id:cid},cart)
+            let cartToFind = await cartsModel.find({_id:cid}).populate('products.id')
+            console.log(JSON.stringify(cartToFind, null, "\t"))
+            return  cartToFind
         }catch(error){
             console.log(error)
             return null
