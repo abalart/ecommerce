@@ -9,12 +9,13 @@ import initializePassport from "./config/passport.config.js"
 import passport from "passport"
 import run from "./run.js"; //Concentrador de rutas
 import config from './config/config.js'
-
+import cookieParser from "cookie-parser";
 const app = express()
 
 
 // Para traer info de post como JSON
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 
 //Configurar el motor de plantillas
