@@ -1,4 +1,4 @@
-import Product from '../dao/classes/product.dao.js'  //Iporto la clase
+import Product from '../dao/classes/product.dao.js'  //Importo la clase
 
 const productservice = new Product() //Viene de cart.dao.js
 
