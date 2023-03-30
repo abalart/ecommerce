@@ -1,10 +1,8 @@
 import {Router} from "express"
-import productModel from "../dao/models/products.model.js"
+import { ProductService } from "../repository/index.js"
 
 const router = Router()
 
-
-// Listar productos con parametros http://127.0.0.1:8080/api/paginate
 router.get("/", async (req, res) => {
 
     const limit = req.query?.limit || 10
@@ -29,13 +27,10 @@ router.get("/", async (req, res) => {
         lean: true
     }
     
-    const data = await productModel.paginate(search, options)
+    const data = await ProductService.getPaginate(search, options)
 
-    const user = req.session.user
-
+    const user = req.user.user
     res.render('products', {data, user})
 })
-
-
 
 export default router
