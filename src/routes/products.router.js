@@ -1,7 +1,19 @@
 import {Router} from "express"
 import { ProductService } from "../repository/index.js"
 
+
 const router = Router()
+
+//Mock generador de usuarios
+router.get('/', async(req, res) => {
+    const users = []
+
+    for (let i = 0; i < 100; i++) {
+        users.push( generateUser() )
+    }
+
+    res.send({status: "success", payload: users })
+})
 
 //GET
 router.get("/", async (req, res) => {
