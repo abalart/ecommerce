@@ -1,19 +1,8 @@
 import {Router} from "express"
 import { ProductService } from "../repository/index.js"
-
+import { generateProduct } from "../utils.js"
 
 const router = Router()
-
-//Mock generador de usuarios
-router.get('/', async(req, res) => {
-    const users = []
-
-    for (let i = 0; i < 100; i++) {
-        users.push( generateUser() )
-    }
-
-    res.send({status: "success", payload: users })
-})
 
 //GET
 router.get("/", async (req, res) => {
@@ -75,6 +64,15 @@ router.post("/", async (req, res) => {
             error
         })
     }
+})
+
+//FAKER
+router.get("/mockingProducts", async (req, res) => {
+    const products=[]
+    for (let i = 0; i < 100; i++) {
+        products.push(generateProduct())
+    }
+    res.send({status:'success', payload: products})
 })
 
 //PUT

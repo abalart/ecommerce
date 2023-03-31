@@ -5,6 +5,8 @@ import { MessageService } from "./repository/index.js"
 import productViewsRouter from './routes/products.views.router.js'
 import sessionRouter from './routes/session.router.js'
 import { passportCall } from "./utils.js";
+import errorMiddlewares from "./errors/errorMiddlewares.js"
+
 
 //Agrupo las rutas de las diferentes APIs en este archivo
 
@@ -32,7 +34,7 @@ const run = (socketServer, app) => {
     })
 
     app.use("/", (req, res) => res.send("Bienvenido!"))
-
+    app.use(errorMiddlewares)
 }
 
 export default run
