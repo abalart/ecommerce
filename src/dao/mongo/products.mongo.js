@@ -1,6 +1,6 @@
 import ProductModel from "./models/products.model.js"
 import CustomError from "../../errors/custom.errors.js"
-import EErros from "../../errors/enums.js"
+import EErros from "../../errors/enums.errors.js"
 import { generateProdErrorInfo } from "../../errors/info.js"
 
 

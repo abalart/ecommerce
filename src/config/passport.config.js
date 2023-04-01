@@ -1,10 +1,11 @@
 import passport from "passport";
 import local from "passport-local"
+import passport_jwt from "passport-jwt"
 import { UserService, CartService } from "../repository/index.js";
 import { createHash, isValidPassword, generateToken, extractCookie } from '../utils.js'
 import GitHubStrategy from "passport-github2"
-import passport_jwt from "passport-jwt"
 import config from "./config.js";
+
 
 const LocalStrategy = local.Strategy
 const JWTStrategy = passport_jwt.Strategy

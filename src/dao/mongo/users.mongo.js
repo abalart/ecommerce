@@ -1,6 +1,6 @@
 import UserModel from "./models/user.model.js"
 import CustomError from "../../errors/custom.errors.js"
-import EErros from "../../errors/enums.js"
+import EErros from "../../errors/enums.errors.js"
 import { generateUserErrorInfoAge, generateUserErrorInfoFirstName, generateUserErrorInfoLastName } from "../../errors/info.js"
 
 export default class User {
