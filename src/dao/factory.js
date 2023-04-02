@@ -1,3 +1,4 @@
+//Este archivo cumple la funcion de cambiar la persistencia segun se necesite. Siguiente el patron factory
 import config from "../config/config.js";
 import mongoose from "mongoose";
 
@@ -5,11 +6,12 @@ export let Cart
 export let Message
 export let Product
 export let User
+export let Mock
 
 console.log(`PERSISTENCE [${config.persistence}]`);
 switch (config.persistence) {
     case 'FILE':
-        
+         
         const { default: ProductFile } = await import('./file/products.file.js')
         const { default: MessageFile } = await import('./file/messages.file.js')
         const { default: UserFile } = await import('./file/users.file.js')
@@ -33,11 +35,13 @@ switch (config.persistence) {
         const { default: MessageMongo } = await import('./mongo/messages.mongo.js')
         const { default: UserMongo } = await import('./mongo/users.mongo.js')
         const { default: CartMongo } = await import('./mongo/carts.mongo.js')
+        const { default: MockMongo } = await import('./mongo/mock.mongo.js')
 
         Product = ProductMongo
         Message = MessageMongo
         Cart = CartMongo
         User = UserMongo
+        Mock = MockMongo
 
         break;
     default:

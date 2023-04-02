@@ -1,5 +1,6 @@
 import ProductDTO from '../DAO/DTO/products.dto.js'
 
+
 export default class ProductRepository {
     constructor(dao) {
         this.dao = dao
@@ -28,5 +29,14 @@ export default class ProductRepository {
 
     update = async (id, productToUpdate) => {
         return await this.dao.update(id, productToUpdate)
+    }
+
+    //En esta parte aplico el geneador de mock (modulo faker)
+    getMock = async () => {
+        return await this.dao.find().lean().exec()
+    }
+
+    createMock = async(data) => {
+        return await this.dao.create(data)
     }
 }

@@ -6,3 +6,4 @@ node_modules/.bin/uuid.cmd
 node_modules
 Anotaciones backend.docx
 *Anotaciones backend.docx
+.env

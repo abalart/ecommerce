@@ -6,7 +6,7 @@ import productViewsRouter from './routes/products.views.router.js'
 import sessionRouter from './routes/session.router.js'
 import { passportCall } from "./utils.js";
 import errorMiddlewares from "./errors/errorMiddlewares.js"
-
+import mocksRouter from "./routes/mocks.router.js"
 
 //Agrupo las rutas de las diferentes APIs en este archivo
 
@@ -22,6 +22,7 @@ const run = (socketServer, app) => {
     app.use("/api/products", productRouter)
     app.use("/api/carts", cartRouter)
     app.use("/api/chat", chatRouter)
+    app.use("/api/mockingProducts", mocksRouter)
 
 
     socketServer.on("connection", socket => {
