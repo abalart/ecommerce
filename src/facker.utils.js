@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker"
 
 faker.locale = 'es'
 
-//Configuro la generacion de informacion mockeada
+//Configuro la generacion de informacion de usuarios mockeada
 export const generateProduct = () => {
     return{
         id: faker.database.mongodbObjectId(),
