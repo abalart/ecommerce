@@ -1,7 +1,7 @@
 /*La capa de repositorios o servicios cumple la funcion de añadir un nivel extra de abstracción para dejar cada vez más limpio 
 y entendible el negocio. La idea es que solo se llame a los metodos del dao*/
 
-import CartDTO from '../DAO/DTO/carts.dto.js'
+import CartDTO from '../dao/DTO/carts.dto.js'
 
 export default class CartRepository {
     constructor(dao) { //Recibimos el dao a utilizar
