@@ -10,8 +10,11 @@ import passport from "passport"
 import run from "./run.js"; //Concentrador de rutas
 import config from './config/config.js'
 import cookieParser from "cookie-parser";
+import { addLogger } from "./utils/devLogger.js";
+
 const app = express()
 
+ app.use(addLogger)
 
 // Para traer info de post como JSON
 app.use(express.json())
@@ -48,7 +51,7 @@ app.use(passport.session())
 //Conexion con la BD
 mongoose.connect(config.mongoUrl, {dbName: config.dbName}, (error) => {
     if(error){
-        console.log("DB No conected...")
+        req.logger.warning('DB No conected...')
         return
     }
      const httpServer = app.listen(config.port, () => console.log("Servidor arriba..."))

@@ -1,7 +1,7 @@
 import EErros from "./enums.errors.js";
 
 export default(error, req, res, next) => {
-    console.log(error.cause);
+    req.logger.error(error.cause)
 
     switch (error.code) {
         case EErros.INVALID_TYPES_ERROR:

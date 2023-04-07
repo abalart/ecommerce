@@ -22,7 +22,7 @@ const initializePassport = () => {
         try {
             const user = await UserService.getOneByEmail(username)
             if(user) {
-                console.log("User already exits");
+                req.logger.info("User already exits")
                 return done(null, false)
             }
 
@@ -49,7 +49,7 @@ const initializePassport = () => {
         try {
             const user = await UserService.getOneByEmail(username)
             if(!user) {
-                console.log("User dont exist");
+                req.logger.info("User dont exist")
                 return done(null, user)
             }
 
@@ -59,7 +59,7 @@ const initializePassport = () => {
 
             return done(null, user)
         } catch (error) {
-            console.log("error")
+             req.logger.error(error)
         }
     }))
 

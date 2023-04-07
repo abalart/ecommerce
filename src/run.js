@@ -7,6 +7,7 @@ import sessionRouter from './routes/session.router.js'
 import { passportCall } from "./utils.js";
 import errorMiddlewares from "./errors/errorMiddlewares.js"
 import mocksRouter from "./routes/mocks.router.js"
+import loggerRouter from "./routes/logger.router.js"
 
 //Agrupo las rutas de las diferentes APIs en este archivo
 
@@ -23,10 +24,10 @@ const run = (socketServer, app) => {
     app.use("/api/carts", cartRouter)
     app.use("/api/chat", chatRouter)
     app.use("/api/mockingProducts", mocksRouter)
-
+    app.use("/loggerTest", loggerRouter)
 
     socketServer.on("connection", socket => {
-        console.log("New client connected")
+        req.logger.info("New client connected")
         socket.on("message", async data => {
         await MessageService.create(data)
         let messages = await MessageService.get()
