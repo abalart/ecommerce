@@ -8,6 +8,7 @@ import { passportCall } from "./utils.js";
 import errorMiddlewares from "./errors/errorMiddlewares.js"
 import mocksRouter from "./routes/mocks.router.js"
 import loggerRouter from "./routes/logger.router.js"
+import mailRouter from "./routes/mail.router.js"
 
 //Agrupo las rutas de las diferentes APIs en este archivo
 
@@ -25,6 +26,7 @@ const run = (socketServer, app) => {
     app.use("/api/chat", chatRouter)
     app.use("/api/mockingProducts", mocksRouter)
     app.use("/loggerTest", loggerRouter)
+    app.use("/mail", mailRouter)
 
     socketServer.on("connection", socket => {
         req.logger.info("New client connected")
@@ -35,7 +37,7 @@ const run = (socketServer, app) => {
         })
     })
 
-    app.use("/", (req, res) => res.send("Bienvenido!"))
+    //app.use("/", (req, res) => res.send("Bienvenido!"))
     app.use(errorMiddlewares)
 }
 

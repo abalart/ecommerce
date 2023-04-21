@@ -1,0 +1,53 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtiene todos los productos existentes
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Productos devueltos corretamente
+        "404":
+          description: Productos no encontrados
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        title:
+          type: String
+          description: Nombre del producto
+        description: 
+          type: String
+          description: Descripcion del producto
+        price:
+          type: Number
+          description: Precio del producto
+        code:
+          type: Number
+          description: Codigo del producto
+        stock:
+          type: Number
+          description: Stock del producto
+        category:
+          type: String
+          description: Categoria del producto 
+        status:
+          type: String
+          description: Estado del producto 
+        thumbails:
+          type: Array
+          description: Imagen del producto
+      example:
+        _id: ObjectId("644081a93f0625dc193bc594")
+        title: Cerveza
+        description: Cerveza Patagonia
+        price: 500
+        code: 8525248526551
+        stock: 99
+        category: Bebidas
+        status: True
+        thumbails: http://www.imagen.com/products/644081a93f0625dc193bc

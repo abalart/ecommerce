@@ -11,6 +11,8 @@ import run from "./run.js"; //Concentrador de rutas
 import config from './config/config.js'
 import cookieParser from "cookie-parser";
 import { addLogger } from "./utils/devLogger.js";
+import swaggerUiExpress from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc'
 
 const app = express()
 
@@ -42,6 +44,20 @@ app.use(session({ //Acá le indico la base de datos donde guardar la sesion
     saveUninitialized:true //Permite guardar cualquier sesion 
 }))
 
+//Documentacion
+const SwaggerOptions = {
+    definition:{
+        openapi:'3.0.1',
+        info: {
+            title:'Documentacion',
+            description:'Este proyecto es un ecommerce'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
+
+const spects = swaggerJSDoc(SwaggerOptions)
+app.use('/apidocs',swaggerUiExpress.serve,swaggerUiExpress.setup(spects))
 
 //Autenticación
 initializePassport()

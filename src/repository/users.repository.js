@@ -1,5 +1,6 @@
 import UserDTO from '../dao/DTO/users.dto.js'
 
+
 export default class UserRepository {
     constructor(dao) {
         this.dao = dao
@@ -21,4 +22,12 @@ export default class UserRepository {
         const dataToInsert = new UserDTO(data)
         return await this.dao.create(dataToInsert)
     }
+
+    emailSender = async(userID) => { 
+        const user = await  this.dao.getById(userID)
+        let html = `<h1> Recuperar password!</h1>
+        <a href="http://stackoverflow.com"><button>Recuperar</button></a>`
+
+     } 
 }
+
