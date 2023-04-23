@@ -49,11 +49,11 @@ const SwaggerOptions = {
     definition:{
         openapi:'3.0.1',
         info: {
-            title:'Documentacion',
+            title:'Documentación de ecomerce',
             description:'Este proyecto es un ecommerce'
         }
     },
-    apis: [`${__dirname}/docs/**/*.yaml`]
+    apis: [`${__dirname}/docs/**/*.yaml`] //Ruta y estructura de donde se toma la documentación
 }
 
 const spects = swaggerJSDoc(SwaggerOptions)

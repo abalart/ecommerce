@@ -26,7 +26,6 @@ router.get("/:id", async (req, res) => {
 //POST (USER)
 router.post("/", authorization('user'), async (req, res) => {
     const newCart = await CartService.create({})
-
     res.json({status: "Success", newCart})
 })
 

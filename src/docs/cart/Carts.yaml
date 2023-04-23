@@ -1,0 +1,108 @@
+paths:
+  /api/cart/:
+    get:
+      summary: Obtiene todos los carritos existentes
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Carritos devueltos correctamente
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'  
+        "500":
+          description: Falla en el servidor.
+    post:
+      summary: Crea un nuevo carrito vacio.
+      tags:
+        - Carts               
+      responses:
+        "200":
+          description: Carritos devueltos corretamente
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'  
+        "500":
+          description: Error a generar un producto       
+  /api/carts/{cid}:
+    get:
+      summary: Obtienen información de un producto en base a su ID
+      tags:
+        - Carts
+      parameters:
+      - id: cid
+        in: path
+        required: true
+        description: ID del carrito que se busca
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Cart'       
+  /:cid/product/:pid:
+    post:
+      summary: Agrega un producto a un carrito segun cada ID
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+              properties:
+                quantity:
+                  type: number  
+      parameters:
+      - cid: cid
+        in: path
+        required: true
+        description: ID del carrito donde agregar el producto
+        schema:
+          $type: String  
+      - pid: pid
+        in: path
+        required: true
+        description: ID del producto donde agregar al producto
+        schema:
+          $type: String
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        products:
+          type: Array
+          description: Nombre del producto
+      example:
+        _id: ObjectId("644081a93f0625dc193bc594")
+        Productos: [{Title,quantity}]     
+requestBodies:
+    updateCarts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        Products:
+          type: Array
+          description: Productos en carrito
+      example:
+        _id: ObjectId("644081a93f0625dc193bc594")
+        Productos: [{Cerveza,10},{Chocolate,5}]
+        
+

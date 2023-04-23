@@ -6,12 +6,167 @@ paths:
         - Products
       responses:
         "200":
+          description: Productos devueltos correctamente
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'  
+        "500":
+          description: Falla en el servidor.
+    post:
+      summary: Crea un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: numbe  
+                code:
+                  type: number  
+                stock:
+                  type: number
+                category:
+                  type: string
+                status:
+                  type: boolean
+                thumbails:
+                  type: Array                     
+      responses:
+        "200":
           description: Productos devueltos corretamente
-        "404":
-          description: Productos no encontrados
+          content:
+            aplication/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'  
+        "500":
+          description: Error a generar un producto       
+  /api/products/{pid}:
+    get:
+      summary: Obtienen información de un producto en base a su ID
+      tags:
+        - Products
+      parameters:
+      - id: pid
+        in: path
+        required: true
+        description: ID del producto que se busca
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+    put:
+      summary: Actualizar un producto a partir del ID y los campos a actualzar
+      tags:
+        - Products
+      parameters:
+      - id: pid
+        in: path
+        required: true
+        description: ID del producto que se busca
+        schema:
+          $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: numbe  
+                code:
+                  type: number  
+                stock:
+                  type: number
+                category:
+                  type: string
+                status:
+                  type: boolean
+                thumbails:
+                  type: Array
+    delete:
+      summary: Elimina un producto a partir del ID
+      tags:
+        - Products
+      parameters:
+      - id: pid
+        in: path
+        required: true
+        description: ID del producto que se desea eliminar
+        schema:
+          $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateProducts'                        
 components:
   schemas:
-    User:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        title:
+          type: String
+          description: Nombre del producto
+        description: 
+          type: String
+          description: Descripcion del producto
+        price:
+          type: Number
+          description: Precio del producto
+        code:
+          type: Number
+          description: Codigo del producto
+        stock:
+          type: Number
+          description: Stock del producto
+        category:
+          type: String
+          description: Categoria del producto 
+        status:
+          type: String
+          description: Estado del producto 
+        thumbails:
+          type: Array
+          description: Imagen del producto
+      example:
+        _id: ObjectId("644081a93f0625dc193bc594")
+        title: Cerveza
+        description: Cerveza Patagonia
+        price: 500
+        code: 8525248526551
+        stock: 99
+        category: Bebidas
+        status: True
+        thumbails: http://www.imagen.com/products/644081a93f0625dc193bc
+requestBodies:
+    updateProducts:
       type: object
       properties:
         _id:
