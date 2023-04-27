@@ -48,7 +48,35 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#components/schemas/Cart'       
+                $ref: '#components/schemas/Cart'   
+    put:
+      summary: Actualiza información de un carrito
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+              properties:
+                product:
+                  type: string    
+      parameters:
+      - id: cid
+        in: path
+        required: true
+        description: ID del carrito que se busca
+        schema:
+          $type: String
+
+      responses:
+        "200":
+          description: Carrito no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Cart'                
   /:cid/product/:pid:
     post:
       summary: Agrega un producto a un carrito segun cada ID
@@ -76,7 +104,32 @@ paths:
         description: ID del producto donde agregar al producto
         schema:
           $type: String
-
+    put:
+      summary: Agrega un producto a un carrito segun cada ID
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+              properties:
+                quantity:
+                  type: number  
+      parameters:
+      - cid: cid
+        in: path
+        required: true
+        description: Actualiza cantidad de producto
+        schema:
+          $type: String  
+      - pid: pid
+        in: path
+        required: true
+        description: ID del producto donde modificar
+        schema:
+          $type: String  
 components:
   schemas:
     Cart:
