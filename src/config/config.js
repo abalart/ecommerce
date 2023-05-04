@@ -11,7 +11,7 @@ export default {
         persistence: process.env.PERSISTENCE,
         jwtPrivateKey: process.env.JWT_PRIVATE_KEY,
         jwtCookieName: process.env.JWT_COOKIE_NAME,
-
+        test_mongo_uri: process.env.TEST_MONGO_URI
 }
 
 
