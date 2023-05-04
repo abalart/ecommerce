@@ -35,7 +35,7 @@ describe("Prueba de creacion de carrito", () => {
         expect(foundCart.products).to.be.an("array")
     })
 
-    it("El DAO debe poder traer todos los carritos creados", async function() {
+    it("Obtencion de todos los carritos creados", async function() {
         const cart = await this.cartsDao.get()
         expect(cart).to.be.deep.an("array")
     })

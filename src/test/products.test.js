@@ -17,19 +17,19 @@ describe("Testing Products DAO", () => {
         this.timeout(5000)
     })
 
-    it("El DAO debe obtener todos los productos en formato de arreglo", async function() {
+    it("Obtencion de productos en fomato de array", async function() {
         const result = await this.productsDao.get()
         expect(result).to.be.an("array")
     })
 
-    it("El DAO debe obtener los productos con paginación, utilizando las opciones que se mandan por parámetros", async function() {
+    it("Obtencion de los productos con paginación, utilizando las opciones que se mandan por parámetros", async function() {
         const result = await this.productsDao.getPaginate({categories: "Lacteos"}, {limit: 5, page: 2, sort: {}, lean: true})
         expect(result.docs).to.be.an("array")
         expect(result.limit).to.be.eql(5)
         expect(result.page).to.be.eql(2)
     })
 
-    it("El DAO debe poder crear un nuevo producto", async function() {
+    it("Creacion de un nuevo producto", async function() {
         const product = {
             title: "Queso1",
             description: "un queso",
@@ -43,7 +43,7 @@ describe("Testing Products DAO", () => {
         expect(result._id).to.be.ok
     })
 
-    it("El DAO debe poder obtener un solo producto mediante el ID", async function() {
+    it("Obtencion de un solo producto mediante el ID", async function() {
         const data = {
             title: "Queso1",
             description: "un queso",
@@ -59,17 +59,17 @@ describe("Testing Products DAO", () => {
         expect(result._id).to.be.ok    
     })
 
-    it("El DAO debe poder modificar un producto", async function() {
+    it("Modificacion de un producto", async function() {
         const data = {
-            title: "Queso1",
-            description: "un queso",
+            title: "Cerveza",
+            description: "Cerveza Patagonia",
             price: 300,
             stock: 10,
-            categories: "Lacteos",
+            categories: "Bebidas",
             thumbnails: [],        }
 
         const newData = {
-            title: "Queso Nuevo",
+            title: "Cereza",
             stock: 15,
         }
 
@@ -82,7 +82,7 @@ describe("Testing Products DAO", () => {
         expect(updatedProduct.stock).to.be.eql(newData.stock)
     })
 
-    it("El DAO debe poder eliminar un producto", async function() {
+    it("Eliminacion de un producto", async function() {
         const data = {
             title: "Queso1",
             description: "un queso",
