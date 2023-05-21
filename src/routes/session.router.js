@@ -3,6 +3,8 @@ import passport from "passport";
 import config from "../config/config.js";
 import { UserService } from "../repository/index.js";
 import { authorization, passportCall } from "../utils.js";
+import { changePassword, sendRecoveryMail } from "../controllers/session.controler.js"
+
 
 const router = Router()
 
@@ -11,6 +13,23 @@ router.get('/', (req, res) => {
     res.render('sessions/login', {style: "/css/login.css"})
 })
 
+//PasswordForget
+router.post("/forgotPassword", sendRecoveryMail);
+
+// Vista de asd
+router.get('/forgotPassword', (req, res) => {
+    res.render('sessions/forgotPassword')
+})
+
+//Reset Password
+router.post("/forgotPassword/:uid/:token", changePassword);
+
+// Vista de recuperacion de password
+router.get('/forgotPassword/:uid/:token', (req, res) => {
+    const uid = req.params.uid
+    const token = req.params.token
+    res.render('sessions/changePassword', {uid: uid, token: token})
+})
 
 
 //Profile

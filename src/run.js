@@ -19,7 +19,6 @@ const run = (socketServer, app) => {
     })
 
     app.use("/products", passportCall("jwt"), productViewsRouter)
-    app.use("/products", productViewsRouter)
     app.use("/session", sessionRouter)
     app.use("/api/products", productRouter)
     app.use("/api/carts", cartRouter)
@@ -39,7 +38,6 @@ const run = (socketServer, app) => {
         })
     })
 
-    //app.use("/", (req, res) => res.send("Bienvenido!"))
     app.use(errorMiddlewares)
 }
 

@@ -3,7 +3,7 @@ import config from '../config/config.js'
 
 export default class Mail {
     constructor() {
-        console.log(config)
+        
         this.transport = nodemailer.createTransport({
             service: 'gmail',
             port: 587,
@@ -21,8 +21,6 @@ export default class Mail {
             subject,
             html
         })
-
-        console.log(result);
 
         return result
     }
