@@ -27,6 +27,8 @@ const run = (socketServer, app) => {
     app.use("/api/mockingProducts", mocksRouter)
     app.use("/loggerTest", loggerRouter)
     app.use("/mail", mailRouter)
+    app.use("/", sessionRouter)
+
 
     socketServer.on("connection", socket => {
         req.logger.info("New client connected")

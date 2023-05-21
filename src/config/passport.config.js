@@ -81,7 +81,7 @@ const initializePassport = () => {
                 age: profile._json.age,
                 password: "",
                 cart: await CartService.create({}),
-                role: "user"
+                role: "user" //Se crean los usuarios por con rol user por defecto
             })
 
             return done(null, newUser)

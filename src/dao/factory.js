@@ -1,4 +1,4 @@
-//Este archivo cumple la funcion de cambiar la persistencia segun se necesite. Siguiente el patron factory
+//Este archivo cumple la funcion de cambiar la persistencia segun se necesite. Siguiente el patron factory.
 import config from "../config/config.js";
 import mongoose from "mongoose";
 
@@ -8,7 +8,7 @@ export let Product
 export let User
 export let Mock
 
-console.log(`PERSISTENCE [${config.persistence}]`);
+
 switch (config.persistence) {
     case 'FILE':
          

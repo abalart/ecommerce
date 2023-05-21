@@ -16,7 +16,8 @@ import swaggerJSDoc from 'swagger-jsdoc'
 
 const app = express()
 
- app.use(addLogger)
+
+app.use(addLogger)
 
 // Para traer info de post como JSON
 app.use(express.json())
@@ -32,8 +33,7 @@ app.set('view engine', 'handlebars')
 app.use(express.static(__dirname+'/public')) //Seteamos nuestra carpeta public
 
 //Guardar sesion en BD
-
-app.use(session({ //Acá le indico la base de datos donde guardar la sesion
+app.use(session({ //Acá le indico la base de datos donde guardar la sesion, variables tomadasa de variables de ambiente
 
     store:MongoStore.create({
        mongoUrl: config.mongoUrl,

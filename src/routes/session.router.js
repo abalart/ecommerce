@@ -6,6 +6,13 @@ import { authorization, passportCall } from "../utils.js";
 
 const router = Router()
 
+//Vista de bienvenida
+router.get('/', (req, res) => {
+    res.render('sessions/register')
+})
+
+
+
 //Profile
 router.get('/current', passportCall('jwt'), authorization('user'), async (req, res)=>{
     const id = req.user.user._id
