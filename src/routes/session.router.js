@@ -8,7 +8,7 @@ const router = Router()
 
 //Vista de bienvenida
 router.get('/', (req, res) => {
-    res.render('sessions/register')
+    res.render('sessions/login', {style: "/css/login.css"})
 })
 
 
