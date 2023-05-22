@@ -38,6 +38,7 @@ const run = (socketServer, app) => {
         })
     })
 
+    app.use("/", (req, res) => res.send("HOME"))
     app.use(errorMiddlewares)
 }
 

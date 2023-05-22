@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 //PasswordForget
 router.post("/forgotPassword", sendRecoveryMail);
 
-// Vista de asd
+// Vista de para recuperar password
 router.get('/forgotPassword', (req, res) => {
     res.render('sessions/forgotPassword')
 })
