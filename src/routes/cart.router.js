@@ -3,7 +3,7 @@ import TicketModel from "../dao/mongo/models/ticket.model.js"
 import { CartService, ProductService } from "../repository/index.js"
 import { authorization, passportCall } from "../utils.js"
 import { v4 as uuidv4 } from 'uuid';
-import CustomError from ".././errors/custom.errors.js"
+import CustomError from "../errors/custom.errors.js"
 import EErros from "../errors/enums.errors.js"
 import { generateCartErrorInfoStock } from "../errors/info.js";
 

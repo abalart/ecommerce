@@ -7,12 +7,12 @@ import { changePassword, sendRecoveryMail } from "../controllers/session.control
 
 
 const router = Router()
-
+/*
 //Vista de bienvenida
 router.get('/', (req, res) => {
     res.render('sessions/login', {style: "/css/login.css"})
 })
-
+*/
 //PasswordForget
 router.post("/forgotPassword", sendRecoveryMail);
 

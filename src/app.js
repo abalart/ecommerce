@@ -70,10 +70,11 @@ mongoose.connect(config.mongoUrl, {dbName: config.dbName}, (error) => {
         req.logger.warning('DB No conected...')
         return
     }
-     const httpServer = app.listen(config.port, () => console.log("Servidor arriba..."))
-     const socketServer = new Server(httpServer)
-     httpServer.on("error", () => console.log("ERROR DE SOCKET"))
-     run(socketServer, app)
+    const httpServer = app.listen(8080, () => console.log("Server up..."))
+    const socketServer = new Server(httpServer)
+    httpServer.on("error", () => console.log("ERROR"))
+    run(socketServer, app)
+
 })
 
  
