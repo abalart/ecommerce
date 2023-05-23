@@ -28,7 +28,7 @@ const run = (socketServer, app) => {
 
 
     socketServer.on("connection", socket => {
-        req.logger.info("New client connected")
+        //req.logger.info("New client connected")
         socket.on("message", async data => {
         await MessageService.create(data)
         let messages = await MessageService.get()
